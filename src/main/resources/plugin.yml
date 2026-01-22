@@ -1,0 +1,9 @@
+name: InfiniteMaze
+version: '1.0.0'
+main: me.mattia.maze.InfiniteMaze
+api-version: '1.21'
+prefix: INFINITE-MAZE
+load: STARTUP
+authors: [ 0tia0 ]
+description: Maze MiniGame plugin made for Minecraft Java Servers
+website: https://github.com/0tia0
