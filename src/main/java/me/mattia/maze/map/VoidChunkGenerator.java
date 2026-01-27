@@ -17,8 +17,8 @@ public class VoidChunkGenerator extends ChunkGenerator {
             int chunkZ,
             BiomeGrid biomeGrid
     ) {
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
+        for (int x = -16; x < 16; x++) {
+            for (int z = -16; z < 16; z++) {
                 biomeGrid.setBiome(x, z, Biome.JUNGLE);
             }
         }
