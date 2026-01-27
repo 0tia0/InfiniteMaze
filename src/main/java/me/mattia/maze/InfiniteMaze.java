@@ -1,6 +1,7 @@
 package me.mattia.maze;
 
 import lombok.Getter;
+import me.mattia.maze.gui.MazeConfigGUI;
 import me.mattia.maze.map.GameMap;
 import me.mattia.maze.maze.MazeScheme;
 import me.mattia.maze.maze.UsedAlgorithm;
@@ -12,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -40,6 +42,16 @@ public final class InfiniteMaze extends JavaPlugin {
     @Override
     public void onDisable() {
 
+    }
+
+    // TESTING ONLY
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (command.getName().equalsIgnoreCase("maze") && sender instanceof Player) {
+            MazeConfigGUI mazeConfigGUI = new MazeConfigGUI(this);
+            mazeConfigGUI.getGui().show((Player) sender);
+        }
+        return false;
     }
 
     public Plugin getInstance() {
