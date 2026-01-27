@@ -4,6 +4,14 @@ plugins {
     id 'com.gradleup.shadow' version '9.3.0'
 }
 
+configurations {
+    proguard
+}
+
+dependencies {
+    proguard 'com.guardsquare:proguard-base:7.4.0'
+}
+
 group = 'me.mattia'
 version = '1.0.0'
 
@@ -45,6 +53,28 @@ tasks {
 
         mergeServiceFiles()
     }
+}
+
+tasks.register('obfuscateJar', JavaExec) {
+    dependsOn shadowJar
+    classpath = configurations.proguard
+    mainClass = 'proguard.ProGuard'
+    args(
+            "-injars", "${buildDir}/libs/InfiniteMaze-${version}.jar",
+            "-outjars", "${buildDir}/libs/InfiniteMaze-${version}-obf.jar",
+            "@proguard.pro"
+    )
+}
+
+tasks.register('obfuscateAlgoOnly', JavaExec) {
+    dependsOn shadowJar
+    classpath = configurations.proguard
+    mainClass = 'proguard.ProGuard'
+    args(
+            "-injars", "${buildDir}/libs/InfiniteMaze-${version}.jar",
+            "-outjars", "${buildDir}/libs/InfiniteMaze-${version}-algo-obf.jar",
+            "@proguard-only-algo.pro"
+    )
 }
 
 def targetJavaVersion = 21
