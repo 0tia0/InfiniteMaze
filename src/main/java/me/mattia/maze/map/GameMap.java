@@ -1,11 +1,15 @@
 package me.mattia.maze.map;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.mattia.maze.InfiniteMaze;
 import me.mattia.maze.maze.MazeScheme;
 import me.mattia.maze.maze.algorithms.KruskalAlgorithm;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @RequiredArgsConstructor
 public class GameMap {
@@ -13,6 +17,8 @@ public class GameMap {
     private final String mapName;
     private World mapWorld;
     private boolean worldCreated;
+
+    @Getter private Location spawnLocation;
 
     public void createWorld() {
         WorldCreator worldCreator = new WorldCreator(mapName);
@@ -39,11 +45,12 @@ public class GameMap {
         mapWorld.setTime(12000);
         mapWorld.setStorm(false);
 
+        spawnLocation = new Location(mapWorld, 0, 100, 0);
         worldCreated = true;
     }
 
 
-    public void buildMap() {
+    public void buildMap(Material walls, Material floor) {
         int mazeWidth = mazeScheme.getWidth();
         int mazeHeight = mazeScheme.getHeight();
 
@@ -53,14 +60,14 @@ public class GameMap {
 
         for (int x = 0; x < mazeWidth; x++) {
             for (int z = 0; z < mazeHeight; z++) {
-                Material materialToUse = mazeScheme.isWall(x, z) ? Material.OAK_LEAVES : Material.AIR;
+                Material materialToUse = mazeScheme.isWall(x, z) ? walls : Material.AIR;
 
                 for (int dx = 0; dx < 2; dx++) {
                     for (int dz = 0; dz < 2; dz++) {
-                        mapWorld.getBlockAt(x*2 + dx + xOffset, 99, z*2 + dz + zOffset).setType(Material.GRASS_BLOCK);
+                        mapWorld.getBlockAt(x * 2 + dx + xOffset, 99, z * 2 + dz + zOffset).setType(floor);
 
                         for (int y = 0; y < wallHeight; y++) {
-                            mapWorld.getBlockAt(x*2 + dx + xOffset, 100 + y, z*2 + dz + zOffset).setType(materialToUse);
+                            mapWorld.getBlockAt(x * 2 + dx + xOffset, 100 + y, z * 2 + dz + zOffset).setType(materialToUse);
                         }
                     }
                 }
@@ -68,10 +75,12 @@ public class GameMap {
         }
 
         createSpawnPlatform();
+        mapWorld.setSpawnLocation(spawnLocation);
     }
 
     public void createSpawnPlatform() {
-        // TODO
+        mapWorld.getBlockAt(0, 99, 0).setType(Material.STONE);
+        mapWorld.getBlockAt(-1, 99, 0).setType(Material.STONE);
     }
 
 }
