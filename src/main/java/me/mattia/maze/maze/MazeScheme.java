@@ -92,7 +92,7 @@ public class MazeScheme {
 
         int cx = width / 2;
         int cy = height / 2;
-        int r = size;
+        int r = size/2;
 
         for (int y = cy - r; y <= cy + r; y++) {
             for (int x = cx - r; x <= cx + r; x++) {
