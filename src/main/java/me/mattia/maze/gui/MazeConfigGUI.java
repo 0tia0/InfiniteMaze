@@ -5,27 +5,31 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import me.mattia.maze.InfiniteMaze;
-import me.mattia.maze.map.GameMap;
+import me.mattia.maze.map.MazeBuilder;
+import me.mattia.maze.map.MazeWorld;
 import me.mattia.maze.maze.MazeScheme;
 import me.mattia.maze.maze.UsedAlgorithm;
 import me.mattia.maze.maze.algorithms.DFSAlgorithm;
 import me.mattia.maze.maze.algorithms.KruskalAlgorithm;
 import me.mattia.maze.maze.algorithms.PrimAlgorithm;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.units.qual.C;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class MazeConfigGUI extends GUI {
     PatternPane pane = this.getLargeChestPatternPane();
 
     private int size = 20;
 
-    // hole as percentage of maze size
     private int holePercent = 0; // min 0%, max 50%
     private int holeSize = 0;
 
@@ -90,10 +94,23 @@ public class MazeConfigGUI extends GUI {
             playConfirmationSound((Player) e.getWhoClicked());
 
             ((Player) e.getWhoClicked()).sendMessage(ChatColor.GREEN + "Stiamo generando il labirinto richiesto!");
-            GameMap tempGameMap = createGameMap("test");
-            tempGameMap.buildMap(wallsBlock, floorBlock);
 
-            ((Player) e.getWhoClicked()).teleport(tempGameMap.getSpawnLocation());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'maze'_dd_MM_yy_HH_mm_ss");
+            String formatted_world_name = LocalDateTime.now().format(formatter);
+
+            generateMazeScheme(mazeScheme -> {
+                try {
+                    MazeWorld mazeWorld = new MazeWorld(algorithm, infiniteMaze);
+
+                    MazeBuilder mazeBuilder = new MazeBuilder(mazeScheme, infiniteMaze, mazeWorld.getWorld());
+                    mazeBuilder.buildMapAsync(wallsBlock, floorBlock, World -> {
+                        ((Player) e.getWhoClicked()).teleport(mazeWorld.getWorld().getSpawnLocation());
+                    });
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+
         });
     }
 
@@ -255,33 +272,31 @@ public class MazeConfigGUI extends GUI {
         return (active ? "§a■ " : "§c■ ") + name;
     }
 
-    private MazeScheme generateMazeScheme() {
-        MazeScheme mazeScheme = new MazeScheme(size, size, algorithm);
+    private void generateMazeScheme(Consumer<MazeScheme> callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(infiniteMaze, () -> {
+            MazeScheme mazeScheme = new MazeScheme(size, size, algorithm);
 
-        mazeScheme.setCenterHoleSize(holeSize);
-        mazeScheme.setTopBottomEntrance(true);
+            mazeScheme.setCenterHoleSize(holeSize);
+            mazeScheme.setTopBottomEntrance(true);
 
-        switch (algorithm) {
-            case DFS -> {
-                DFSAlgorithm.generate(mazeScheme);
-                break;
+            switch (algorithm) {
+                case DFS -> {
+                    DFSAlgorithm.generate(mazeScheme);
+                    break;
+                }
+                case KRUSKAL ->  {
+                    KruskalAlgorithm.generate(mazeScheme);
+                    break;
+                }
+                case PRIM ->  {
+                    PrimAlgorithm.generate(mazeScheme);
+                    break;
+                }
             }
-            case KRUSKAL ->  {
-                KruskalAlgorithm.generate(mazeScheme);
-                break;
-            }
-            case PRIM ->  {
-                PrimAlgorithm.generate(mazeScheme);
-                break;
-            }
-        }
 
-        return mazeScheme;
-    }
-
-    private GameMap createGameMap(String mapName) {
-        GameMap gameMap = new GameMap(generateMazeScheme(), mapName);
-        gameMap.createWorld();
-        return gameMap;
+            Bukkit.getScheduler().runTask(infiniteMaze, () -> {
+                callback.accept(mazeScheme);
+            });
+        });
     }
 }

@@ -1,28 +1,22 @@
 package me.mattia.maze;
 
+import com.sk89q.worldedit.math.interpolation.LinearInterpolation;
 import lombok.Getter;
 import me.mattia.maze.gui.MazeConfigGUI;
-import me.mattia.maze.map.GameMap;
-import me.mattia.maze.maze.MazeScheme;
-import me.mattia.maze.maze.UsedAlgorithm;
-import me.mattia.maze.maze.algorithms.DFSAlgorithm;
-import me.mattia.maze.maze.algorithms.KruskalAlgorithm;
-import me.mattia.maze.maze.algorithms.PrimAlgorithm;
+import me.mattia.maze.map.MazeWorldTemplate;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.util.Random;
-import java.util.logging.Logger;
 
 public final class InfiniteMaze extends JavaPlugin {
+    @Getter private final String templateWorldName = "do_not_touch_maze_template_world";
+
     @Override
     public void onEnable() {
         //https://patorjk.com/software/taag/#p=display&f=Star%20Wars&t=INFINITE%20%20%20%20%20%20MAZE&x=none
@@ -35,6 +29,10 @@ public final class InfiniteMaze extends JavaPlugin {
 
         // Implementazione bStat
         Metrics metrics = new Metrics(this, 29013);
+
+        Bukkit.getScheduler().runTask(this, () -> {
+            MazeWorldTemplate.generateTemplateWorld(new File(Bukkit.getWorldContainer(), templateWorldName), this);
+        });
 
         this.getLogger().info("Plugin started successfully!");
     }
