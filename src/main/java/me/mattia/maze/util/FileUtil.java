@@ -10,6 +10,8 @@ public class FileUtil {
             if (!target.exists()) target.mkdirs();
 
             for (String file : source.list()) {
+                if (file.equals("uid.dat") || file.equals("session.lock")) continue;
+
                 copyWorld(
                         new File(source, file),
                         new File(target, file)
