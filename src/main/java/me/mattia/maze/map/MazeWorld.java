@@ -41,7 +41,7 @@ public class MazeWorld {
 
         if(world == null) throw new IOException("World could not be created!");
 
-        world.setAutoSave(false);
+        world.setAutoSave(true);
         return world;
     }
 }
