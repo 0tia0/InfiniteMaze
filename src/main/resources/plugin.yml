@@ -15,4 +15,4 @@ depend: [PlaceholderAPI]
 softdepend: [FastAsyncWorldEdit]
 
 commands:
-  maze:
+  maze: Main plugin command - use /maze help to see more
