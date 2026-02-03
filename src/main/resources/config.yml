@@ -1,0 +1,41 @@
+################################################################################################################################
+#     __  .__   __.  _______  __  .__   __.  __  .___________. _______          .___  ___.      ___      ________   _______    #
+#    |  | |  \ |  | |   ____||  | |  \ |  | |  | |           ||   ____|         |   \/   |     /   \    |       /  |   ____|   #
+#    |  | |   \|  | |  |__   |  | |   \|  | |  | `---|  |----`|  |__            |  \  /  |    /  ^  \   `---/  /   |  |__      #
+#    |  | |  . `  | |   __|  |  | |  . `  | |  |     |  |     |   __|           |  |\/|  |   /  /_\  \     /  /    |   __|     #
+#    |  | |  |\   | |  |     |  | |  |\   | |  |     |  |     |  |____          |  |  |  |  /  _____  \   /  /----.|  |____    #
+#    |__| |__| \__| |__|     |__| |__| \__| |__|     |__|     |_______|         |__|  |__| /__/     \__\ /________||_______|   #
+#                                                                                                                              #
+################################################################################################################################
+#                     ______   ______   .__   __.  _______  __    _______  ____    ____ .___  ___.  __                         #
+#                    /      | /  __  \  |  \ |  | |   ____||  |  /  _____| \   \  /   / |   \/   | |  |                        #
+#                   |  ,----'|  |  |  | |   \|  | |  |__   |  | |  |  __    \   \/   /  |  \  /  | |  |                        #
+#                   |  |     |  |  |  | |  . `  | |   __|  |  | |  | |_ |    \_    _/   |  |\/|  | |  |                        #
+#                   |  `----.|  `--'  | |  |\   | |  |     |  | |  |__| |  __  |  |     |  |  |  | |  `----.                   #
+#                    \______| \______/  |__| \__| |__|     |__|  \______| (__) |__|     |__|  |__| |_______|                   #
+#                                                                                                                              #
+################################################################################################################################
+
+maze_generation:
+  # Maximum maze size selectable via GUI
+  max_size: 200
+
+  # Minimum allowed maze size to prevent very small generations
+  # WE HIGHLY RECOMMEND keeping this value above 20 to avoid poor generation results
+  min_size: 20 #READ ABOVE BEFORE CHANGING
+
+  # Thickness of the maze walls (in blocks)
+  wall_width: 2
+
+  # Height of the maze walls (in blocks)
+  wall_height: 4
+
+anti_lag_limitation:
+  # To prevent lag, the plugin generates the maze gradually over time
+  # This is the maximum number of blocks placed per server tick
+  # Smaller values reduce lag but increase generation time
+  # The default value is balanced between speed and performance
+  block_per_tick: 500
+
+  # If true, FAWE will be used for faster and more efficient block placement when available
+  use_FAWE_if_available: true
