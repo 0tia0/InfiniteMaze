@@ -13,7 +13,7 @@ dependencies {
 }
 
 group = 'me.mattia'
-version = '1.0.0'
+version = 'B1.0.0'
 
 repositories {
     mavenCentral()
@@ -21,6 +21,7 @@ repositories {
     maven { url = "https://repo.papermc.io/repository/maven-public/" }
     maven { url = "https://jitpack.io" }
     maven { url = "https://maven.enginehub.org/repo/" }
+    maven { url = 'https://repo.helpch.at/releases' }
 }
 
 dependencies {
@@ -42,6 +43,9 @@ dependencies {
     implementation platform("com.intellectualsites.bom:bom-newest:1.55")
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Core'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit'
+
+    // PAPI
+    compileOnly 'me.clip:placeholderapi:2.11.7'
 }
 
 tasks {
