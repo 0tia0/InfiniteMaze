@@ -37,6 +37,8 @@ public class MazeWorld {
         FileUtil.copyWorld(source, target);
 
         WorldCreator creator = new WorldCreator(worldName);
+        creator.generator(new MazeWorldChunkGenerator());
+
         World world = creator.createWorld();
 
         if(world == null) throw new IOException("World could not be created!");

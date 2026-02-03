@@ -12,7 +12,6 @@ public class MazeWorldTemplate {
 
             WorldCreator wc = new WorldCreator(worldFile.getName());
             wc.generator(new MazeWorldChunkGenerator());
-            wc.type(WorldType.FLAT);
             wc.generateStructures(false);
 
             World world = wc.createWorld();

@@ -1,6 +1,8 @@
 package me.mattia.maze.map;
 
+import com.sk89q.worldedit.world.biome.Biomes;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
@@ -12,33 +14,67 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Random;
 
-@SuppressWarnings("all")
 public class MazeWorldChunkGenerator extends ChunkGenerator {
+
     @Override
-    public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biome) {
-        ChunkData data = createChunkData(world);
-
-        for (int bx = -32; bx < 32; bx++) {
-            for (int bz = -32; bz < 32; bz++) {
-                biome.setBiome(bx, bz, Biome.JUNGLE);
-            }
-        }
-
-        return data;
+    public void generateNoise(
+            @NotNull WorldInfo worldInfo,
+            @NotNull Random random,
+            int chunkX,
+            int chunkZ,
+            @NotNull ChunkData chunkData
+    ) {
+        // NIENTE = mondo vuoto
     }
 
     @Override
-    public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) { return List.of(); }
+    public void generateSurface(
+            @NotNull WorldInfo worldInfo,
+            @NotNull Random random,
+            int chunkX,
+            int chunkZ,
+            @NotNull ChunkData chunkData
+    ) {
+        // NIENTE = mondo vuoto
+    }
 
     @Override
-    public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunkData) { }
+    public void generateBedrock(
+            @NotNull WorldInfo worldInfo,
+            @NotNull Random random,
+            int chunkX,
+            int chunkZ,
+            @NotNull ChunkData chunkData
+    ) {
+        // niente bedrock
+    }
 
     @Override
-    public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunkData) { }
+    public void generateCaves(
+            @NotNull WorldInfo worldInfo,
+            @NotNull Random random,
+            int chunkX,
+            int chunkZ,
+            @NotNull ChunkData chunkData
+    ) {
+        // niente caverne
+    }
 
     @Override
-    public void generateBedrock(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunkData) { }
+    public @NotNull BiomeProvider getDefaultBiomeProvider(@NotNull WorldInfo worldInfo) {
+        return new BiomeProvider() {
+            @Override
+            public @NotNull Biome getBiome(
+                    @NotNull WorldInfo worldInfo,
+                    int x, int y, int z
+            ) {
+                return Biome.JUNGLE;
+            }
 
-    @Override
-    public void generateCaves(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunkData) { }
+            @Override
+            public @NotNull List<Biome> getBiomes(@NotNull WorldInfo worldInfo) {
+                return List.of(Biome.JUNGLE);
+            }
+        };
+    }
 }
