@@ -12,13 +12,17 @@ import me.mattia.maze.maze.UsedAlgorithm;
 import me.mattia.maze.maze.algorithms.DFSAlgorithm;
 import me.mattia.maze.maze.algorithms.KruskalAlgorithm;
 import me.mattia.maze.maze.algorithms.PrimAlgorithm;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +32,12 @@ import java.util.function.Consumer;
 public class MazeConfigGUI extends GUI {
     PatternPane pane = this.getLargeChestPatternPane();
 
-    private int size = 20;
+    private final FileConfiguration config;
+    private final FileConfiguration messagesConfig;
+
+    private int size;
+    private final int maxSize;
+    private final int minSize;
 
     private int holePercent = 0; // min 0%, max 50%
     private int holeSize = 0;
@@ -39,7 +48,21 @@ public class MazeConfigGUI extends GUI {
     private Material floorBlock = Material.BARRIER;
 
     public MazeConfigGUI(InfiniteMaze infiniteMaze) {
-        super(new ChestGui(6, "Maze : Configurator"), new StaticPane(0, 0, 9, 6), infiniteMaze);
+        super(new ChestGui(
+                6,
+                infiniteMaze.getTextFormatter().basicFormat(
+                        infiniteMaze.getConfigs().getMessagesConfig().getConfig().getString("gui.maze.title", "Maze : Configurator"))
+                ),
+                new StaticPane(0, 0, 9, 6), infiniteMaze
+        );
+
+        config = infiniteMaze.getConfig();
+        messagesConfig = infiniteMaze.getConfigs().getMessagesConfig().getConfig();
+
+        size = config.getInt("maze_generation.min_size", 20);
+
+        maxSize = config.getInt("maze_generation.max_size", 200);
+        minSize = config.getInt("maze_generation.min_size", 20);
 
         this.getGui().addPane(this.staticPane);
         this.getGui().addPane(pane);
@@ -93,7 +116,12 @@ public class MazeConfigGUI extends GUI {
 
             playConfirmationSound((Player) e.getWhoClicked());
 
-            ((Player) e.getWhoClicked()).sendMessage(ChatColor.GREEN + "Stiamo generando il labirinto richiesto!");
+            ((Player) e.getWhoClicked()).spigot().sendMessage(
+                    this.infiniteMaze.getTextFormatter().formatText(messagesConfig.getString(
+                            "gui.chat.maze_generation_in_progress",
+                            "%prefix% &7We are generating your maze, &aplease wait&7. You will be teleported when it’s ready. Generation time depends on maze size. Speed it up via &aconfig.yml &7or by installing [&a&nFAWE](https://0tia0.gitbook.io/infinite-maze)."
+                    ))
+            );
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'maze'_dd_MM_yy_HH_mm_ss");
             String formatted_world_name = LocalDateTime.now().format(formatter);
@@ -195,7 +223,7 @@ public class MazeConfigGUI extends GUI {
         item.setName("§eMaze Size");
         item.setLore(List.of(
                 "",
-                "§7Select the size",
+                "§7Select the size (" + minSize + " - " + maxSize + ")",
                 "§7Current: §e" + size + "x" + size,
                 "",
                 "§e■ §7LEFT CLICK §eADD 10",
@@ -208,7 +236,7 @@ public class MazeConfigGUI extends GUI {
         return new GuiItem(item, e -> {
             e.setCancelled(true);
 
-            size = updateSize(e, size, 200, 20, 10);
+            size = updateSize(e, size, maxSize, minSize, 10);
 
             refreshItems();
         });
