@@ -30,3 +30,13 @@ gui:
     title: "&6&lMaze &8: &2&lConfigurator"
   chat:
     maze_generation_in_progress: "%prefix% &7We are generating your maze, &6please wait&7. You will be teleported when it’s ready. Generation time depends on maze size. Speed it up via &6config.yml &7or by installing [&6&nFAWE](https://0tia0.gitbook.io/infinite-maze#dependencies)."
+
+commands:
+  missing_permission: "%prefix% &7You don't have the permission to use this command"
+  invalid_sender: "%prefix% &7You can't use this command here"
+  #
+  # %label% will be automatically replace with the command name
+  #
+  command_not_found: "%prefix% &7Command not found. Try &6/%label% &7help"
+  correct_use: "%prefix% &7Incorrect use of the command. Try &6/%label% &7<sub-command>"
+  reload_configurations: "%prefix% &7Configurations have been reloaded"
