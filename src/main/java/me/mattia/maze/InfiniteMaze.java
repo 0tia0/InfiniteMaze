@@ -1,14 +1,21 @@
 package me.mattia.maze;
 
+import com.google.common.eventbus.Subscribe;
 import com.sk89q.worldedit.math.interpolation.LinearInterpolation;
 import lombok.Getter;
+import me.mattia.maze.commands.CommandManager;
+import me.mattia.maze.config.Configs;
+import me.mattia.maze.config.CustomConfig;
 import me.mattia.maze.gui.MazeConfigGUI;
 import me.mattia.maze.map.MazeWorldTemplate;
+import me.mattia.maze.messages.TextFormatter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +23,13 @@ import java.io.File;
 
 public final class InfiniteMaze extends JavaPlugin {
     @Getter private final String templateWorldName = "do_not_touch_maze_template_world";
+
+    @Getter private Configs configs;
+    @Getter private TextFormatter textFormatter;
+
+    @Getter private CommandManager mazeCommandManager;
+
+    @Getter private final boolean betaRelease = true;
 
     @Override
     public void onEnable() {
@@ -27,12 +41,24 @@ public final class InfiniteMaze extends JavaPlugin {
         this.getLogger().info("|  | |  |\\   | |  |     |  | |  |\\   | |  |     |  |     |  |____                   |  |  |  |  /  _____  \\   /  /----.|  |____ ");
         this.getLogger().info("|__| |__| \\__| |__|     |__| |__| \\__| |__|     |__|     |_______|                  |__|  |__| /__/     \\__\\ /________||_______|");
 
+        configs = new Configs(this);
+        textFormatter = new TextFormatter(this);
+
         // Implementazione bStat
         Metrics metrics = new Metrics(this, 29013);
+
+        // Load PAPI API
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            this.getLogger().warning("Could not find PlaceholderAPI! This plugin is required.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
 
         Bukkit.getScheduler().runTask(this, () -> {
             MazeWorldTemplate.generateTemplateWorld(new File(Bukkit.getWorldContainer(), templateWorldName), this);
         });
+
+        mazeCommandManager = new CommandManager(this);
+        this.getCommand("maze").setExecutor(mazeCommandManager);
 
         this.getLogger().info("Plugin started successfully!");
     }
@@ -40,16 +66,6 @@ public final class InfiniteMaze extends JavaPlugin {
     @Override
     public void onDisable() {
 
-    }
-
-    // TESTING ONLY
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("maze") && sender instanceof Player) {
-            MazeConfigGUI mazeConfigGUI = new MazeConfigGUI(this);
-            mazeConfigGUI.getGui().show((Player) sender);
-        }
-        return false;
     }
 
     public Plugin getInstance() {
