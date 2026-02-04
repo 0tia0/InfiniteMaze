@@ -13,14 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-@RequiredArgsConstructor
 public class MazeBuilder {
     private final MazeScheme mazeScheme;
     private final InfiniteMaze infiniteMaze;
     private final World mapWorld;
 
-    private final int wallHeight = 4;
-    private final int wallWidth = 2;
+    private final int wallHeight;
+    private final int wallWidth;
+
+    public MazeBuilder(MazeScheme mazeScheme, InfiniteMaze infiniteMaze, World mapWorld) {
+        this.mazeScheme = mazeScheme;
+        this.infiniteMaze = infiniteMaze;
+        this.mapWorld = mapWorld;
+
+        this.wallWidth = infiniteMaze.getConfig().getInt("maze_generation.wall_width", 2);
+        this.wallHeight = infiniteMaze.getConfig().getInt("maze_generation.wall_height", 4);
+    }
 
     private record BlockData(int x, int y, int z, Material material) {}
 
@@ -31,7 +39,7 @@ public class MazeBuilder {
         int xOffset = -mazeWidth * wallWidth;
         int zOffset = 10;
 
-        final int batchSize = 500;
+        final int batchSize = infiniteMaze.getConfig().getInt("anti_lag_limitation.block_per_tick", 500);
 
         Bukkit.getScheduler().runTaskAsynchronously(infiniteMaze, () -> {
             List<BlockData> blocksToPlace = new ArrayList<>();
