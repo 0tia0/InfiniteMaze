@@ -1,7 +1,7 @@
 name: InfiniteMaze
 prefix: INFINITE-MAZE
 
-version: '1.0.0'
+version: 'B1.0.0'
 api-version: '1.21'
 load: STARTUP
 
@@ -15,4 +15,6 @@ depend: [PlaceholderAPI]
 softdepend: [FastAsyncWorldEdit]
 
 commands:
-  maze: Main plugin command - use /maze help to see more
+  maze:
+    description: Main plugin command - use /maze help to see more
+    usage: /<command> help
