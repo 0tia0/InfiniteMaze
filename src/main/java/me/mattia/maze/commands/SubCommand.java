@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
-public abstract class SubCommand {
+public abstract class SubCommand implements TabCompleter {
     @Getter final protected String name;
     @Getter final protected String description;
     @Getter final protected String usage;

@@ -2,7 +2,6 @@ package me.mattia.maze.commands.subcommands;
 
 import me.mattia.maze.InfiniteMaze;
 import me.mattia.maze.commands.AcceptedSender;
-import me.mattia.maze.commands.CommandPermissions;
 import me.mattia.maze.commands.SubCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,21 +10,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ReloadCommand extends SubCommand {
+public class EventCommand extends SubCommand {
     private final InfiniteMaze infiniteMaze;
 
-    public ReloadCommand(InfiniteMaze plugin) {
-        super("reload", "reload configuration files", "&6/maze reload", AcceptedSender.ALL, CommandPermissions.COMMAND_RELOAD_PERMISSION);
+    public EventCommand(InfiniteMaze plugin) {
+        // Permission non aggiunta perchè i controlli vengono effettuati sui sub create e start
+        super("event", "work in progress", "&6/maze event &7<create | start>", AcceptedSender.PLAYER, "");
         this.infiniteMaze = plugin;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        this.infiniteMaze.getConfigs().reloadAllConfigs();
-        sender.spigot().sendMessage(this.infiniteMaze.getTextFormatter().formatText(
-                infiniteMaze.getConfigs().getMessagesConfig().getConfig().getString(
-                        "commands.reload_configurations", "%prefix% &7Configurations have been reloaded")
-        ));
+        sender.spigot().sendMessage(infiniteMaze.getTextFormatter().formatText("%prefix% &7This feature is under development! It'll be available soon"));
     }
 
     @Override

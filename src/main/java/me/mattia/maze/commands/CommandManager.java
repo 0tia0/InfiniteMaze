@@ -4,9 +4,7 @@ import com.fastasyncworldedit.core.extent.filter.LinkedFilter;
 import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
 import lombok.Getter;
 import me.mattia.maze.InfiniteMaze;
-import me.mattia.maze.commands.subcommands.GuiCommand;
-import me.mattia.maze.commands.subcommands.HelpCommand;
-import me.mattia.maze.commands.subcommands.ReloadCommand;
+import me.mattia.maze.commands.subcommands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,13 +30,16 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         this.subCommands.add(new GuiCommand(infiniteMaze));
         this.subCommands.add(new HelpCommand(infiniteMaze));
         this.subCommands.add(new ReloadCommand(infiniteMaze));
+        this.subCommands.add(new MazeTpCommand(infiniteMaze));
+        this.subCommands.add(new EventCommand(infiniteMaze));
+        this.subCommands.add(new JoinCommand(infiniteMaze));
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             sender.spigot().sendMessage(this.infiniteMaze.getTextFormatter().formatText(
-                    messagesConfig.getString("commands.correct_use", "%prefix% §7Incorrect use of the command. Try &6/%label% &7<sub-command>").replace("%label%", label)
+                    messagesConfig.getString("commands.correct_use", "%prefix% &7Incorrect use of the command. Try %usage%").replace("%usage%", "&6/maze <subcommand>")
             ));
             return true;
         }
@@ -54,7 +55,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                if (!cmd.hasPermission(sender)) {
+                if (!cmd.hasPermission(sender) && !sender.hasPermission(CommandPermissions.COMMAND_ADMIN_PERMISSION)) {
                     sender.spigot().sendMessage(this.infiniteMaze.getTextFormatter().formatText(
                             messagesConfig.getString("commands.missing_permission", "%prefix% §7You don't have the permission to use this command")
                     ));
@@ -62,7 +63,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 }
 
                 if(this.infiniteMaze.isBetaRelease()) {
-                    sender.sendMessage("§6InfiniteMaze §8§l» §7You are running a §cbeta version §7. Some features may be §cwork in progress§7. New versions will be released soon");
+                    sender.sendMessage("§6InfiniteMaze §8§l» §7You are running a §cbeta version§7. Some features may be §cwork in progress§7. New versions will be released soon");
                     sender.sendMessage("");
                 }
 
@@ -87,6 +88,14 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
         if (args.length == 1) {
             return subCommandsName;
+        }
+
+        if (args.length > 1) {
+            for (SubCommand cmd : subCommands) {
+                if (cmd.getName().equalsIgnoreCase(args[0])) {
+                    return cmd.onTabComplete(sender,command, alias, Arrays.copyOfRange(args, 1, args.length));
+                }
+            }
         }
 
         return Collections.emptyList();

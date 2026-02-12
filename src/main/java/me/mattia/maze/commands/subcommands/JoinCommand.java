@@ -11,21 +11,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ReloadCommand extends SubCommand {
+public class JoinCommand extends SubCommand {
     private final InfiniteMaze infiniteMaze;
 
-    public ReloadCommand(InfiniteMaze plugin) {
-        super("reload", "reload configuration files", "&6/maze reload", AcceptedSender.ALL, CommandPermissions.COMMAND_RELOAD_PERMISSION);
+    public JoinCommand(InfiniteMaze plugin) {
+        super("join", "work in progress", "&6/maze join &7<event>", AcceptedSender.PLAYER, CommandPermissions.COMMAND_EVENT_JOIN_PERMISSION);
         this.infiniteMaze = plugin;
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        this.infiniteMaze.getConfigs().reloadAllConfigs();
-        sender.spigot().sendMessage(this.infiniteMaze.getTextFormatter().formatText(
-                infiniteMaze.getConfigs().getMessagesConfig().getConfig().getString(
-                        "commands.reload_configurations", "%prefix% &7Configurations have been reloaded")
-        ));
+        sender.spigot().sendMessage(infiniteMaze.getTextFormatter().formatText("%prefix% &7This feature is under development! It'll be available soon"));
     }
 
     @Override
