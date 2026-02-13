@@ -11,13 +11,13 @@
 
 ## ⚙️ Features
 
-- **Maze Generator**: Multiple generation algorithms
-- **Customizable Size**: From 20×20 up to 200×200 by default (fully configurable)
-- **Center Hole**: Optionally leave an open center area for custom structures
-- **Custom Blocks**: Use any Minecraft block for walls and floors
-- **GUI Controlled**: Configure and generate mazes entirely through an intuitive GUI
+- **Maze Generator**: Multiple generation algorithms  
+- **Customizable Size**: From 20×20 up to 200×200 by default (fully configurable)  
+- **Center Hole**: Optionally leave an open center area for custom structures  
+- **Custom Blocks**: Use any Minecraft block for walls and floors  
+- **GUI Controlled**: Configure and generate mazes entirely through an intuitive GUI  
 - **Events**: Create and manage maze-based events **(WIP)**
-- **Integrations**: Built-in support for PlaceholderAPI
+- **Integrations**: Built-in support for PlaceholderAPI 
 
 ![gui-showcase](https://cdn.modrinth.com/data/8wuj6ddG/images/7825ae9d02c9987e16c2f94b5c09532186ef2e01.gif)
 
@@ -33,7 +33,7 @@
 <details>
 <summary><strong>config.yml</strong></summary>
 
-```
+```yaml
 ################################################################################################################################
 #     __  .__   __.  _______  __  .__   __.  __  .___________. _______          .___  ___.      ___      ________   _______    #
 #    |  | |  \ |  | |   ____||  | |  \ |  | |  | |           ||   ____|         |   \/   |     /   \    |       /  |   ____|   #
@@ -51,6 +51,8 @@
 #                    \______| \______/  |__| \__| |__|     |__|  \______| (__) |__|     |__|  |__| |_______|                   #
 #                                                                                                                              #
 ################################################################################################################################
+
+plugin_configurations_version: 1
 
 maze_generation:
   # Maximum maze size selectable via GUI
@@ -82,7 +84,7 @@ anti_lag_limitation:
 <details>
 <summary><strong>messages.yml</strong></summary>
 
-```
+```yaml
 ################################################################################################################################
 #     __  .__   __.  _______  __  .__   __.  __  .___________. _______          .___  ___.      ___      ________   _______    #
 #    |  | |  \ |  | |   ____||  | |  \ |  | |  | |           ||   ____|         |   \/   |     /   \    |       /  |   ____|   #
@@ -112,11 +114,23 @@ prefix: "&6InfiniteMaze &8&l»&r"
 
 gui:
   maze:
-    title: "&6Maze &8: &2Configurator"
+    title: "&6&lMaze &8: &2&lConfigurator"
   chat:
-    maze_generation_in_progress: "%prefix% &7We are generating your maze, &6please wait&7. You will be teleported when it’s ready. Generation time depends on maze size. Speed it up via &6config.yml &7or by installing [&6&nFAWE](https://0tia0.gitbook.io/infinite-maze)."
-```
+    maze_generation_in_progress: "%prefix% &7We are generating your maze, &6please wait&7. You will be teleported when it’s ready. Generation time depends on maze size. Speed it up via &6config.yml &7or by installing [&6&nFAWE](https://0tia0.gitbook.io/infinite-maze#dependencies)."
 
+commands:
+  missing_permission: "%prefix% &7You don't have the permission to use this command"
+  invalid_sender: "%prefix% &7You can't use this command here"
+
+  #
+  # %command% will be automatically replace with the command name
+  # %usage% will be automatically replace with the correct command usage
+  #
+  command_not_found: "%prefix% &7Command not found. Try &6/%command% &7help"
+  correct_use: "%prefix% &7Incorrect use of the command. Try %usage%"
+
+  reload_configurations: "%prefix% &7Configurations have been reloaded"
+```
 
 </details>
 
@@ -126,13 +140,13 @@ gui:
 <details>
 <summary><strong>Commands</strong></summary>
 
-- `/maze help` — Display the command help menu
-- `/maze gui` — Open the GUI to configure and generate a maze
+- `/maze help` — Display the command help menu  
+- `/maze gui` — Open the GUI to configure and generate a maze  
 - `/maze tp <maze_world_name>` — Teleport you, or the selected player, into the maze world
-- `/maze reload` — Reload all plugin configurations
-- `/maze event create` — Set up an event in the world where the maze was generated **(WIP)**
-- `/maze join <event>` — Join a specific maze event **(WIP)**
-- `/maze event start` — Start the event and teleport all joined players **(WIP)**
+- `/maze reload` — Reload all plugin configurations  
+- `/maze event create` — Set up an event in the world where the maze was generated **(WIP)** 
+- `/maze join <event>` — Join a specific maze event **(WIP)** 
+- `/maze event start` — Start the event and teleport all joined players **(WIP)**  
 
 </details>
 
@@ -140,13 +154,13 @@ gui:
 <summary><strong>Permissions</strong></summary>
 
 ### General Commands
-- `maze.commands.gui` — Access the maze GUI
-- `maze.commands.reload` — Reload the plugin configuration
-- `maze.commands.event.create` — Create a maze event
-- `maze.commands.event.join` — Join a maze event
-- `maze.commands.event.start` — Start a maze event
-- `maze.commands.help` — Access the help menu
-- `maze.commands.admin` — Bypass all permission checks
+- `maze.commands.gui` — Access the maze GUI  
+- `maze.commands.reload` — Reload the plugin configuration  
+- `maze.commands.event.create` — Create a maze event  
+- `maze.commands.event.join` — Join a maze event  
+- `maze.commands.event.start` — Start a maze event  
+- `maze.commands.help` — Access the help menu  
+- `maze.commands.admin` — Bypass all permission checks  
 
 </details>
 
@@ -158,12 +172,12 @@ _Detailed information about all available commands and permissions can be found 
 
 ## 🌟 Why InfiniteMaze?
 
-- Fully GUI-based and easy to use
-- Procedural: every maze is unique
-- High level of customization for layout, blocks, and gameplay
+- Fully GUI-based and easy to use  
+- Procedural: every maze is unique  
+- High level of customization for layout, blocks, and gameplay  
 - Event-ready with a built-in minigame system that tracks the first three players to finish **(WIP)**
 
 ## 🔗 Useful Links
 
-- Wiki: [Infinite Maze Wiki](https://0tia0.gitbook.io/infinite-maze)
+- Wiki: [Infinite Maze Wiki](https://0tia0.gitbook.io/infinite-maze) 
 - Bug Reports: [Issue Tracker](https://github.com/0tia0/InfiniteMaze/issues) _(before opening an issue make sure to follow [this rules](https://0tia0.gitbook.io/infinite-maze/faq/troubleshooting-and-support))_
