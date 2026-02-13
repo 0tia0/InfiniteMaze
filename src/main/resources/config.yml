@@ -16,6 +16,8 @@
 #                                                                                                                              #
 ################################################################################################################################
 
+plugin_configurations_version: 1
+
 maze_generation:
   # Maximum maze size selectable via GUI
   max_size: 200

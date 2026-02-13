@@ -35,6 +35,18 @@ public final class InfiniteMaze extends JavaPlugin {
         configs = new Configs(this);
         textFormatter = new TextFormatter(this);
 
+        int configsVersion = this.getConfig().getInt("plugin_configurations_version");
+        if (!this.configs.checkCompatibility(configsVersion)) {
+            getLogger().info("");
+            getLogger().severe("=========================================================================");
+            getLogger().severe("InfiniteMaze - Outdated configuration detected!");
+            getLogger().severe("You have installed a new version without updating the configuration files.");
+            getLogger().severe("Please delete the plugin folder and restart the server.");
+            getLogger().severe("You may create a backup of the old configuration to migrate your settings.");
+            getLogger().severe("=========================================================================");
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
         // Implementazione bStat
         Metrics metrics = new Metrics(this, 29013);
 

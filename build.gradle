@@ -51,6 +51,7 @@ dependencies {
 tasks {
     runServer {
         minecraftVersion("1.21")
+        pluginJars.from(tasks.shadowJar)
     }
 
     shadowJar {
