@@ -1,3 +1,7 @@
+<p align="center">
+  Available on Modrinth at <a href="https://modrinth.com/plugin/infinitemaze">this page</a>
+</p>
+
 ![Plugin wallpaper with the logo](https://cdn.modrinth.com/data/cached_images/715642709c0be7bba1055bb7b0065f4bb7040314.png)
 
 # <p align="center">Procedural mazes, generated in-game</p>
