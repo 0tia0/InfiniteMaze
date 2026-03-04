@@ -13,7 +13,7 @@ dependencies {
 }
 
 group = 'me.mattia'
-version = 'B1.0.0'
+version = 'B1.1.0'
 
 repositories {
     mavenCentral()

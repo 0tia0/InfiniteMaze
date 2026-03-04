@@ -106,15 +106,18 @@ public class MazeBuilder {
             // ==== LIVELLO BASE ====
             // Bordo sinistro
             setTopSlab(mapWorld.getBlockAt(startX, yLevel, z), Material.POLISHED_BLACKSTONE_SLAB);
+
             // Corpo centrale
             for (int dx = 1; dx <= wallWidth; dx++) {
                 mapWorld.getBlockAt(startX + dx, yLevel, z).setType(Material.POLISHED_BLACKSTONE);
             }
+
             // Bordo destro
             setTopSlab(mapWorld.getBlockAt(startX + wallWidth + 1, yLevel, z), Material.POLISHED_BLACKSTONE_SLAB);
             // ==== LIVELLO SUPERIORE ====
             for (int dx = 0; dx <= wallWidth + 1; dx++) {
                 Block block = mapWorld.getBlockAt(startX + dx, yLevel + 1, z);
+
                 // Bordo sempre top slab
                 if (dx == 0 || dx == wallWidth + 1) {
                     // Pattern alternato nel corpo centrale
@@ -126,7 +129,10 @@ public class MazeBuilder {
                 }
             }
         }
-        mapWorld.setSpawnLocation(new Location(mapWorld, startX + ((double) wallWidth /2) + 1, 100, 1));
+
+        mapWorld.setSpawnLocation(new Location(mapWorld, startX + ((double) wallWidth /2) + 1, 100, 2));
+        setTopSlab(mapWorld.getBlockAt(startX + 1, 100, 0), Material.POLISHED_BLACKSTONE_SLAB);
+        setTopSlab(mapWorld.getBlockAt(startX + 2, 100, 0), Material.POLISHED_BLACKSTONE_SLAB);
     }
 
     private void setTopSlab(Block block, Material slabMaterial) {

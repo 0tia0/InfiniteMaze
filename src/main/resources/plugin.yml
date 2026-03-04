@@ -1,7 +1,7 @@
 name: InfiniteMaze
 prefix: INFINITE-MAZE
 
-version: 'B1.0.0'
+version: 'B1.1.0'
 api-version: '1.21'
 load: STARTUP
 
