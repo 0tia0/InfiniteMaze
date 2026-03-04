@@ -25,12 +25,12 @@ public final class InfiniteMaze extends JavaPlugin {
     @Override
     public void onEnable() {
         //https://patorjk.com/software/taag/#p=display&f=Star%20Wars&t=INFINITE%20%20%20%20%20%20MAZE&x=none
-        this.getLogger().info(" __  .__   __.  _______  __  .__   __.  __  .___________. _______                   .___  ___.      ___      ________   _______ ");
-        this.getLogger().info("|  | |  \\ |  | |   ____||  | |  \\ |  | |  | |           ||   ____|                  |   \\/   |     /   \\    |       /  |   ____|");
-        this.getLogger().info("|  | |   \\|  | |  |__   |  | |   \\|  | |  | `---|  |----`|  |__                     |  \\  /  |    /  ^  \\   `---/  /   |  |__   ");
-        this.getLogger().info("|  | |  . `  | |   __|  |  | |  . `  | |  |     |  |     |   __|                    |  |\\/|  |   /  /_\\  \\     /  /    |   __|  ");
-        this.getLogger().info("|  | |  |\\   | |  |     |  | |  |\\   | |  |     |  |     |  |____                   |  |  |  |  /  _____  \\   /  /----.|  |____ ");
-        this.getLogger().info("|__| |__| \\__| |__|     |__| |__| \\__| |__|     |__|     |_______|                  |__|  |__| /__/     \\__\\ /________||_______|");
+        this.getLogger().info(" __  .__   __.  _______  __  .__   __.  __  .___________. _______        .___  ___.      ___      ________   _______ ");
+        this.getLogger().info("|  | |  \\ |  | |   ____||  | |  \\ |  | |  | |           ||   ____|       |   \\/   |     /   \\    |       /  |   ____|");
+        this.getLogger().info("|  | |   \\|  | |  |__   |  | |   \\|  | |  | `---|  |----`|  |__          |  \\  /  |    /  ^  \\   `---/  /   |  |__   ");
+        this.getLogger().info("|  | |  . `  | |   __|  |  | |  . `  | |  |     |  |     |   __|         |  |\\/|  |   /  /_\\  \\     /  /    |   __|  ");
+        this.getLogger().info("|  | |  |\\   | |  |     |  | |  |\\   | |  |     |  |     |  |____        |  |  |  |  /  _____  \\   /  /----.|  |____ ");
+        this.getLogger().info("|__| |__| \\__| |__|     |__| |__| \\__| |__|     |__|     |_______|       |__|  |__| /__/     \\__\\ /________||_______|");
 
         configs = new Configs(this);
         textFormatter = new TextFormatter(this);

@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class MazeBuilder {
     private final int wallHeight;
     private final int wallWidth;
 
+    Material usedFloor = Material.STONE;
+
     public MazeBuilder(MazeScheme mazeScheme, InfiniteMaze infiniteMaze, World mapWorld) {
         this.mazeScheme = mazeScheme;
         this.infiniteMaze = infiniteMaze;
@@ -33,6 +37,8 @@ public class MazeBuilder {
     private record BlockData(int x, int y, int z, Material material) {}
 
     public void buildMapAsync(Material walls, Material floor, Consumer<World> callback) {
+        this.usedFloor = floor;
+
         int mazeWidth = mazeScheme.getWidth();
         int mazeHeight = mazeScheme.getHeight();
 
@@ -78,7 +84,6 @@ public class MazeBuilder {
 
                         if (index >= blocksToPlace.size()) {
                             createSpawnPlatform();
-                            mapWorld.setSpawnLocation(new Location(mapWorld, 0, 100, 0));
                             callback.accept(mapWorld);
                             this.cancel();
                         }
@@ -89,9 +94,46 @@ public class MazeBuilder {
     }
 
     public void createSpawnPlatform() {
-        mapWorld.getBlockAt(0, 99, 0).setType(Material.STONE);
-        mapWorld.getBlockAt(-1, 99, 0).setType(Material.STONE);
-        mapWorld.getBlockAt(0, 99, -1).setType(Material.STONE);
-        mapWorld.getBlockAt(-1, 99, -1).setType(Material.STONE);
+        int mazeWidth = mazeScheme.getWidth();
+        int platformDepth = 10;
+        int yLevel = 99;
+
+        // Correzione per centrare la piattaforma
+        int startX = -mazeWidth + ((mazeWidth/2 % 2 == 0) ? 0 : -2);
+        System.err.println((mazeWidth % 2 == 0) + " " + mazeWidth);
+
+        for (int z = 0; z < platformDepth; z++) {
+            // ==== LIVELLO BASE ====
+            // Bordo sinistro
+            setTopSlab(mapWorld.getBlockAt(startX, yLevel, z), Material.POLISHED_BLACKSTONE_SLAB);
+            // Corpo centrale
+            for (int dx = 1; dx <= wallWidth; dx++) {
+                mapWorld.getBlockAt(startX + dx, yLevel, z).setType(Material.POLISHED_BLACKSTONE);
+            }
+            // Bordo destro
+            setTopSlab(mapWorld.getBlockAt(startX + wallWidth + 1, yLevel, z), Material.POLISHED_BLACKSTONE_SLAB);
+            // ==== LIVELLO SUPERIORE ====
+            for (int dx = 0; dx <= wallWidth + 1; dx++) {
+                Block block = mapWorld.getBlockAt(startX + dx, yLevel + 1, z);
+                // Bordo sempre top slab
+                if (dx == 0 || dx == wallWidth + 1) {
+                    // Pattern alternato nel corpo centrale
+                    if (z % 2 == 0) {
+                        block.setType(Material.POLISHED_BLACKSTONE);
+                    } else {
+                        setTopSlab(block, Material.POLISHED_BLACKSTONE_SLAB);
+                    }
+                }
+            }
+        }
+        mapWorld.setSpawnLocation(new Location(mapWorld, startX + ((double) wallWidth /2) + 1, 100, 1));
+    }
+
+    private void setTopSlab(Block block, Material slabMaterial) {
+        block.setType(slabMaterial);
+
+        Slab slab = (Slab) block.getBlockData();
+        slab.setType(Slab.Type.TOP);
+        block.setBlockData(slab);
     }
 }
